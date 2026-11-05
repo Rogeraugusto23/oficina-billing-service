@@ -50,3 +50,11 @@ public sealed record PagamentoRejeitadoEvent : IntegrationEvent
     public string NumeroOS { get; init; } = "";
     public string? Motivo { get; init; }
 }
+
+/// <summary>Consumido: OS cancelada pelo OS Service (ex.: falha na execução) → estorno/cancelamento da cobrança.</summary>
+public sealed record OrdemServicoCanceladaEvent : IntegrationEvent
+{
+    public Guid OrdemServicoId { get; init; }
+    public string NumeroOS { get; init; } = "";
+    public string Motivo { get; init; } = "";
+}

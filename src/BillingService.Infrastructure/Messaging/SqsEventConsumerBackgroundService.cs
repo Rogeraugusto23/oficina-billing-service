@@ -104,6 +104,14 @@ public class SqsEventConsumerBackgroundService : BackgroundService
                 await useCase.ExecutarAsync(evento.OrdemServicoId);
                 break;
             }
+            case nameof(OrdemServicoCanceladaEvent):
+            {
+                // Compensação da Saga: execução falhou, OS cancelada -> cancela/estorna a cobrança.
+                var evento = JsonSerializer.Deserialize<OrdemServicoCanceladaEvent>(message.Body)!;
+                var useCase = scope.ServiceProvider.GetRequiredService<CancelarOrcamentoUseCase>();
+                await useCase.ExecutarAsync(evento.OrdemServicoId);
+                break;
+            }
             default:
                 _logger.LogDebug("Evento {EventType} ignorado pelo Billing Service", eventTypeAttr.StringValue);
                 break;
