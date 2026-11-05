@@ -36,7 +36,9 @@ public class DynamoDbOrcamentoRepository : IOrcamentoRepository
     public async Task<Orcamento?> ObterPorOrdemServicoIdAsync(Guid ordemServicoId)
     {
         var table = Table.LoadTable(_client, _tableName);
-        var search = table.Scan(new ScanFilter().AddCondition("OrdemServicoId", ScanOperator.Equal, ordemServicoId.ToString()));
+        var filter = new ScanFilter();
+        filter.AddCondition("OrdemServicoId", ScanOperator.Equal, ordemServicoId.ToString());
+        var search = table.Scan(filter);
         var page = await search.GetNextSetAsync();
         return page.Count > 0 ? MapToEntity(page[0]) : null;
     }
@@ -44,7 +46,9 @@ public class DynamoDbOrcamentoRepository : IOrcamentoRepository
     public async Task<Orcamento?> ObterPorMercadoPagoPreferenceIdAsync(string preferenceId)
     {
         var table = Table.LoadTable(_client, _tableName);
-        var search = table.Scan(new ScanFilter().AddCondition("MercadoPagoPreferenceId", ScanOperator.Equal, preferenceId));
+        var filter = new ScanFilter();
+        filter.AddCondition("MercadoPagoPreferenceId", ScanOperator.Equal, preferenceId);
+        var search = table.Scan(filter);
         var page = await search.GetNextSetAsync();
         return page.Count > 0 ? MapToEntity(page[0]) : null;
     }
