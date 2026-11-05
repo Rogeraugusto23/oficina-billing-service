@@ -5,3 +5,4 @@ metadata:
   namespace: oficina-billing-service
 data:
   ASPNETCORE_ENVIRONMENT: "Production"
+  AWS_REGION: "us-east-1"
